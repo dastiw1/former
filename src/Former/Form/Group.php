@@ -390,12 +390,11 @@ class Group extends Tag
 	 */
 	public function wrap($contents, $label = null)
 	{
-
         if (starts_with($contents, '<textarea') || str_contains($contents, ' type="radio"') || str_contains($contents, ' type="checkbox"')) {
             $this->removeClass('field')->addClass('fields');
         }
 
-		$group = $this->open();
+        $group = $this->open();
 		$group .= $label;
 		$group .= $this->app['former.framework']->wrapField($contents);
 		$group .= $this->close();
