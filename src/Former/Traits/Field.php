@@ -116,7 +116,9 @@ abstract class Field extends FormerObject implements FieldInterface
 		$groupClass = Former::FORMSPACE.$groupClass;
 
 		$this->group = new $groupClass($this->app, $this->label);
-	}
+        //if($this->isCheckable() ) {dd($this->group);}
+
+    }
 
 	/**
 	 * Redirect calls to the group if necessary

@@ -352,6 +352,9 @@ abstract class Checkable extends Field
 		// rendering inline.
 		$class = $this->app['former']->framework() == 'TwitterBootstrap3' ? trim($isInline) : $this->checkable.$isInline;
 
+		// In SemanticUI labels stay after input (radio/checkbox)
+		$isLabelAfterInput =  $this->app['former']->framework() == 'SemanticUI' ? true: false;
+
 		// Merge custom attributes with global attributes
 		$attributes = array_merge($this->attributes, $attributes);
 		if (!isset($attributes['id'])) {
@@ -376,10 +379,25 @@ abstract class Checkable extends Field
 		}
 
 		// If no label to wrap, return plain checkable
-		if (!$label) {
+        if (!$label) {
+		    if($isLabelAfterInput) {
+		        $field->addClass('input');
+            }
 			$element = (is_object($field)) ? $field->render() : $field;
 		} else {
-			$element = Element::create('label', $field.$label)->for($attributes['id'])->class($class)->render();
+		    if($isLabelAfterInput) {
+                $inputType = isset($field->attributes['type']) ? $field->attributes['type'] : '';
+
+                $element = $field. Element::create('label', $label)->for($attributes['id'])->class($class)->render();
+
+                $wrapper = Element::create('div', $element)->class('ui checkbox');
+                if($inputType == 'radio') {
+                    $wrapper->addClass($inputType);
+                }
+                $element = $wrapper->render();
+            } else {
+                $element = Element::create('label', $field.$label)->for($attributes['id'])->class($class)->render();
+            }
 		}
 
 		// If BS3, if checkables are stacked, wrap them in a div with the checkable type
