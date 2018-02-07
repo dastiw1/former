@@ -393,6 +393,9 @@ class Group extends Tag
         if (starts_with($contents, '<textarea') || str_contains($contents, ' type="radio"') || str_contains($contents, ' type="checkbox"')) {
             $this->removeClass('field')->addClass('fields');
         }
+        if (str_contains($contents, ' type="radio"') || str_contains($contents, ' type="checkbox"')) {
+            $this->removeClass('inline')->addClass('inline-checkable');
+        }
 
         $group = $this->open();
 		$group .= $label;
